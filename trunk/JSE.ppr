@@ -1,0 +1,43 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.HideOutput=0
+Compilator.LogType=0
+DefaultDir=C:\Users\awsdert\Desktop\Other\jse.cz.cc
+DefaultCPIndex=7
+LogtoEnd=0
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=1
+DocumentRoot=C:\Users\awsdert\Desktop\Other\jse.cz.cc
+[Project tree]
+JSE
+	+/
+		+tab
+			tab\jse-d0.txt
+			tab\jse-d1.txt
+			tab\jse-d2.txt
+			inc\jse-q.txt
+			inc\jse-q2.txt
+		+inc
+			inc\js.js
+			inc\jse.css
+			inc\jse.ini
+			inc\jse.js
+			inc\jse.txt
+			inc\main.css
+			inc\main.js
+		data.htm
+		index.htm
+[Open project files]
+0=inc\js.js
+1=inc\jse.js
+2=index.htm
+3=inc\jse.ini
+4=inc\jse.txt
+5=tab\jse-d0.txt
+6=tab\jse-d1.txt
+[Selected Project Files]
+Main=
+Selected=inc\jse.js

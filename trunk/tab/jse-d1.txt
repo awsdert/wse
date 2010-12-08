@@ -1,0 +1,20 @@
+<div><label for="from">From:</label>
+<select id="from" name="from">
+	<option value="1">JSE 1</option>
+	<option value="4">Tipue 4</option>
+	<option value="5">JSE 5</option>
+	<option value="6">JSE 6</option>
+	<option value="7">JSE 7</option>
+	<option value="8">JSE 8</option>
+</select>
+<label for="to">To:</label>
+<select id="to" name="to">
+	<option value="1">JSE 1</option>
+	<option value="4">Tipue 4</option>
+	<option value="5">JSE 5</option>
+	<option value="6">JSE 6</option>
+	<option value="7">JSE 7</option>
+	<option value="8">JSE 8</option>
+</select></div>
+<textarea id="data" name="data" cols="50" rows="15"></textarea>
+<div><button type="submit">Fix</button></div>

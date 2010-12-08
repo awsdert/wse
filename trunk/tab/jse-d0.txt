@@ -1,0 +1,37 @@
+<h3>Type</h3><div>
+	<div class="jse-row"><label for="to">To:</label><select id="to" name="to">
+		<option value="1">JSE 1</option>
+		<option value="4">Tipue 4</option>
+		<option value="5">JSE 5</option>
+		<option value="6">JSE 6</option>
+		<option value="7">JSE 7</option>
+		<option value="8">JSE 8</option>
+</select></div>
+	<div class="jse-row"><label for="type">Type:</label><select id="type" name="type"><option value="xml">XML</option></select></div>
+</div><h3>Title</h3><div>
+	<div class="jse-row"><label for="d_name">Name:</label><input id="d_name" name="d_name" value="?????" /></div>
+	<div class="jse-row"><label for="d_url">URL:</label><input id="d_url" name="d_url" value="" /></div>
+	<div class="jse-row"><label for="d_frame">Frame:</label><input id="d_frame" name="d_frame" value="" /></div>
+	<div class="jse-row"><label for="d_tooltip">ToolTip:</label><input id="d_tooltip" name="d_tooltip" value="" /></div>
+</div><h3>Image</h3><div>
+	<div class="jse-row"><label for="d_img">URL:</label><input id="d_img" name="d_img" value="" /></div>
+	<div class="jse-row"><label for="d_alt">Text:</label><input id="d_alt" name="d_alt" value="" /></div>
+	<div class="jse-row"><label for="d_size">Size:</label><input id="d_size" name="d_size" value="" /></div>
+	<div class="jse-row"><label for="d_width">Width:</label><input id="d_width" name="d_width" value="" /></div>
+	<div class="jse-row"><label for="d_height">Height:</label><input id="d_height" name="d_height" value="" /></div>
+</div><h3>Other</h3><div>
+	<div class="jse-row"><label for="d_genre">Genre:</label><input id="d_genre" name="d_genre" value="" /></div>
+	<div class="jse-row"><label for="d_tags">Keywords:</label><input id="d_tags" name="d_tags" value="" /></div>
+	<div class="jse-row"><label for="d_content">Content:</label><textarea id="d_content" name="d_content" cols="50" rows="15"></textarea></div>
+	<div class="jse-row"><label for="d_rating">Rating:</label><select id="d_rating" name="d_rating">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+	</select></div>
+	<div class="jse-row"><label for="d_sticky">Sticky:</label><select id="d_sticky" name="d_sticky">
+		<option value="0">False</option>
+		<option value="1">True</option>
+	</select></div>
+</div>

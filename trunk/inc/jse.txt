@@ -1,0 +1,33 @@
+# This is the latest format for the JSE search data.
+# This format will stay until I sort out the JSON loader
+# ;; splits grouped data while ; splits array data and ^ splits usable data. Examples are below.
+# Any line begining with a # will be treated as a comment
+# In urls to select the root of your site (if specified by jse.ini otherwise treated as local) use / like in UNIX based systems
+# From now on when specifiying both with & height use size instead
+# For specifying characters used by the engine use the following:
+# > ; as \?s
+# > \ as \?b
+# > ^ as \?p
+# > = as \?e
+# You may have noticed the sub section in the Google data, it represents the navigational links that you sometimes see in search results.
+# You'll understand better if you look at the result JSE returns for google.
+link^name=JSE^url=http://jse.freeoda.com/^tooltip=JavaScript Search Engine;;image^url=/jse.gif^alt=Logo^size=100px;;other^genre=Web^rating=5^tags=tipue;tipuejs^sticky^content=JavaScript Search Engine
+link^name=Google^url=http://www.google.com/^tooltip=Search Engine;;sub^name=Mail;url=http://mail.google.com/^name=Bookmarks;url=http://www.google.com/bookmarks/;;other^genre=Web^rating=4^content=Online Search Engine
+link^name=AltaVista^url=http://www.altavista.com/^tooltip=Search Engine;;other^genre=Web^rating=4content=Online Search Engine
+link^name=GameFAQs^url=http://www.gamefaqs.com/^tooltip=Game Information Site;;other^genre=Information^rating=4^content=Cheats, Hints &amp; Guides to cover your gaming needs
+link^name=Xploder^url=http://www.xploder.net/^tooltip=Game Cheats Site;;other^genre=Information^rating=5^content=Cheats for almost any game
+link^name=Action Replay^url=http://www.codejunkies.com/^toolip=Game Cheats Site;;other^genre=Information^rating=5^contentCheats for almost any game
+link^name=IProfile^url=http://www.iprofile.com/^tooltip=Online Work Profile;;other^genre=Work^rating=5^sticky^content=Store all information / CVs you need for job sites / applications in this secure location
+link^name=DirectGov^url=http://www.direct.goc.uk/^tooltip=UK Goverment Information;;sub^name=Jobseekers Direct;url=http://jobseekers.direct.gov.uk/;;other^genre=Information^rating=2^content=Information on Benefits, Jobs, Legal Acts &amp; other stuff
+link^name=Monster^url=http;//www.monster.com/^tooltip=Job Site;;other^genre=Work^rating=4^content=Job search, Advice, CV Building &amp; more
+link^name=Reed^url=http://www.reed.co.uk/^tooltip=Job Site;;other^genre=Work^rating=4^content=Job search, Advice, CV Building &amp; more
+link^name=ReactOS^url=http://www.reactos.org/^tooltip=Open Source OS;;other^genre=Operating System^rating=4^content=Free Windows Compatable OS^sticky
+link^name=Ubuntu^url=http://www.ubuntu^tooltip=Open Source OS;;other^genre=Operating System^rating=4^content=UNIX based OS with GUI unlike most Linux distrobutions
+link^name=Mozilla^url=http://www.mozilla.com/;;sub^name=Firefox;url=http://www.firefox.com/^name=Thunderbird;url=http://www.mozillamessaging.com/en-GB/thunderbird/;;other^genre=Web^rating=5^content=Open Source Suite
+link^name=Microsoft^url=http://www.microsoft.com/;;sub^name=Bing;url=http://www.bing.com/^name=Hotmail;url=http://www.hotmail.com/;;other^genre=Other^content=Many differnt things available to the visitor
+link^name=BlueGriffon^url=http://www.bluegriffon.org/;;other^genre=Web^rating=3^content=WYSIWYG Web Editor
+link^name=PCSX2^url=http://pcsx2.net/;;other^genre=Gaming^rating=4^content=Playstation 2 Emulator^tags=ps2^sticky
+link^name=pSX^url=http://psxemulator.gazaxian.com/;;other^genre=Gaming^rating=4^content=Playstation 1 Emulator^tags=ps1^sticky
+link^name=ePSXe^url=http://www.epsxe.com/;;other^genre=Gaming^rating=3^content=Playstation 1 Emulator^tags=ps1
+link^name=PSCX^url=http://www.pcsx.net/;;other^genre=Gaming^rating=3^content=Playstation 1 Emulator^tags=ps1
+link^name=Firefox Add-ons;;sub^name=Public Fox;url=https://addons.mozilla.org/en-US/firefox/addon/3911/;;other^genre=Web^rating=5^content=Recommened Add-ons
