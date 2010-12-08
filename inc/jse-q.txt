@@ -1,0 +1,7 @@
+<form><div id="jse-row"><a id="jse-cfg">+</a><span><input id="jse-search"><button id="jse-submit">&gt;</button></span></div>
+<div class="jse-row"><label for="jse-sort">Sort</label><select id="jse-sort"><option value="asc">A-Z</option><option value="desc">Z-A</option></select></div>
+<div class="jse-row"><label for="jse-by">By</label><select id="jse-by"><option value="name">Name</option><option value="number">Number</option><option value="genre">Genre</option><option value="rating">Rating</option></select></div>
+<div class="jse-row"><label for="jse-results">Results</label><input id="jse-results"></div>
+<div class="jse-row"><label for="jse-pages">Pages</label><input id="jse-pages"></div>
+<div class="jse-row"><label for="jse-total">Total</label><input id="total"></div>
+<input id="jse-page"></form>
