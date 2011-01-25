@@ -1,0 +1,16 @@
+.result .title { font-weight:bold }
+.result .title, .result .data { background:#990 }
+.sticky { background:#9cf }
+.pagelinks a, #cfg, #go {
+	font-family:monospace;
+	cursor:pointer;
+	text-align:center
+}
+.pagelinks {
+	margin-bottom:5px;
+	margin-top:5px
+}
+.pagelinks a {
+	background:#9cf;
+	border:1px #000 solid;
+} #results, #pages, #total { text-align:right }
