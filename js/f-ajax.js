@@ -1,67 +1,98 @@
-fujio.ajax.dom = function () {
-	var a = arguments; var d = [a[2], a[1]];
+fujio.ajax.html = function () {
+	var a = arguments, d; d = [a[2], a[1]];
 	fujio.ajax(a[0], function () {
-		var a = arguments; var d = a[1][0], f = a[1][1], a = a[0];
-		if (!fujio.is(f, 'method')) { f = function () {}; }
-		f(fujio.parse.dom(a), d);
+		var a = arguments, d, x; x = a[0]; d = a[1][0]; a = a[1][1];
+		if (!isMethod(a)) { a = function () {}; }
+		a(fujio.parse.dom(x, 'html'), d);
 	}, d);
 };
-fujio.ajax.ini = function () {
-	var a = arguments, i, n, t;
+fujio.ajax.xml = function () {
+	var a = arguments, d; d = [a[2], a[1]];
 	fujio.ajax(a[0], function () {
-		var a = arguments; var d = a[1][0], f = a[1][1], a = a[0], r = null;
-		if (!fujio.is(f, 'method')) { f = function () {}; }
-		if (a !== '') {
-			r = {}; a = a.split('\n');
-			for (i = 0;i < a.length;i++) {
-				if (/^\[\w\]$/.test(a[i])) {
-					n = a[i].slice(1, -1); 
-					r[n] = {};
-				} else if (n && /^\w/i.test(a[i])) {
-					t = a[i].split(/\=/);
-					if (!t[1]) { t[1] = ''; }
-					r[n][t[0]] = t[1];
-					t = null;
-				}
-			}
-		} f(r, d);
-	}, [a[2], a[1]]);
+		var a = arguments, d, x; x = a[0]; d = a[1][0]; a = a[1][1];
+		if (!isMethod(a)) { a = function () {}; }
+		a(fujio.parse.dom(x), d);
+	}, d);
 };
 fujio.ajax.rss = function () {
-	var a = arguments;
+	var a = arguments, d; d = [a[2], a[1]];
 	fujio.ajax.dom(a[0], function () {
-		var a = arguments, c, d, i, j, k, l, m, o, r = [], t, x;
-		d = a[1][0]; x = a[0]; a = a[1][1];
-		if (!fujio.is(a, 'method')) { f = function () {}; }
-		c = fujio.tags(x, "channel");
+		var a = arguments, c, d, x, r = [], l, m, t, i, j, k, o;
+		x = a[0]; d = a[1][0]; a = a[1][1];
+		if (!isMethod(a)) { a = function () {}; }
+		c = fujio.tags(a, 'channel');
 		for (i = 0;i < c.length;i++) {
-			r[i] = { attr : {}, genres : [], hours : [], days : [], list : [] }; l = c[i].childNodes;
+			r[i] = { genres : [], hours : [], days : [], list : [] }; l = c[i].childNodes;
 			for (j = 0;j < l.length;j++) {
-				t = l[j].nodeName;
-				if (t === "item") {
+				t = lcase(l[j].nodeName);
+				switch (t) {
+				case 'item':
 					o = {}; m = l[j].childNodes;
 					for (k = 0;k < m.length;k++) {
-						t = m[k].nodeName;
-						if (t !== "#text")
-							{ o[t] =  m[k].childNodes[0].nodeValue; }
-					} r[i].list.push(o); o = null;
-				} else if (t === "category") {
-					r[i].genres.push(l[j].childNodes[0].nodeValue);
-				} else if (t === "skipHours") {
-					m = fujio.tags(l[j], "hour");
-					for (j = 0;j < m.length;j++)
-						{ r[i].hours.push((+m[k].childNodes[0].nodeValue)); }
-				} else if (t === "skipDays") {
-					m = fujio.tags(l[j], "day");
-					for (j = 0;j < m.length;j++)
-						{ r[i].days.push((+m[k].childNodes[0].nodeValue)); }
-				} else if (t === "ttl") {
-					r[i][t] = (+l[j].childNodes[0].nodeValue);
-				} else {
-					if (t !== "#text")
-						{ r[i][t] = l[j].childNodes[0].nodeValue; }
+						t = lcase(m[k].nodeName);
+						if (t !== "#text") { o[t] = m[k].childNodes[0].nodeValue; }
+					} r[i].list.push(o); o = null; break;
+				case 'category': r[i].genres.push(l[j].childNodes[0].nodeValue); break;
+				case 'skiphours':
+					m = fujio.kids(l[j], 'hour');
+					for (k = 0;k < m.length;k++) {
+						r[i].hours.push((+m[k].childNodes[0].nodeValue));
+					} break;
+				case 'skipdays':
+					m = fujio.kids(l[j], 'day');
+					for (k = 0;k < m.length;k++) {
+						r[i].days.push((+m[k].childNodes[0].nodeValue));
+					} break;
+				case 'ttl': r[i][t] = (+l[j].childNodes[0].nodeValue); break;
+				default: if (t !== "#text") { r[i][t] = l[j].childNodes[0].nodeValue; } break;
 				} m = null;
 			} l = null;
 		} a(r, d);
-	}, [a[2], a[1]]);
+	}, d);
+};
+fujio.ajax.csv = function () {
+	var a = arguments;
+	fujio.ajax(a[0], function () {
+		var a = arguments, r = [], x, d, l, i, j, c, o = re('\\"\\"', 'g'), n = 0, t;
+		x = a[0]; d = a[1][1]; a = a[1][0];
+		if (!a || !isMethod(a)) { a = function () {}; }
+		if (x) {
+			l = x.split('\n'); t = d.comma;
+			if (!t || !isText(t)) { d.comma = ','; } t = d.dot;
+			if (!t || !isText(t)) { d.dot = '.'; }
+			for (i = 0;i < l.length;i++, n++) {
+				t = l[i].split(d.delimeter);
+				if (!r[n]) { r[n] = []; }
+				for (j = 0;j < t.length;j++) {
+					if (c || re('^\\"').test(t[j])) {
+						if (c) { r[n].push('\\n' + t[j]); c = false; }
+						else { r[n].push(t[j]); }
+						if (!re('\\"$').test(t[j])) {
+							if (!is(t[j + 1])) { n--; c = true; }
+							else { r[n][-1] += '"'; }
+						} t[j] = null;
+					} else { r[n].push(t[j]); }
+				} l[i] = null;
+			} l = null; o = re('^\\d+(\\' + d.dot + '\\d+)?$');
+			for (i = 0;i < r.length;i++) {
+				t = r[i];
+				for (j = 0;j < t.length;j++) {
+					if (re('^\\".*\\"$').test(t[j])) { t[j] = t[j].slice(1, -1); }
+					t[j] = t[j].replace('""', '"');
+					if (o.test(t[j])) {
+						t[j] = t[j].replace(d.dot, '.');
+						t[j] = (+t[j]);
+					}
+				} r[i] = t;
+			}
+		} a(r, d.data);
+	}, [a[1], a[2]]);
+};
+fujio.ajax.json = function () {
+	var a = arguments;
+	fujio.ajax(a[0], function () {
+		var a = arguments, d, x; x = a[0]; d = a[1][1]; a = a[1][0];
+		if (!a || !isMethod(a)) { a = function () {}; }
+		a(fujio.parse.json(x), d);
+	}, [a[1], a[2]]);
 };

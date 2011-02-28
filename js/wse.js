@@ -1,14 +1,15 @@
-function wse() {
+/*jslint browser: true, onevar: true, white: false, undef: false, forin: true, maxerr: 30*/
+function wse () {
 	var a = arguments[0];
 	GET = null;
-	if (typeof a !== "string" || !a) { a = "wse.ini"; }
+	if (!a || !isTxt(a)) { a = "wse.ini"; }
 	f.ajax.ini(a, function () {
-		var a = arguments; var x = a[0], t = null, q = wse.s.q, g = GET, s = x.Search;
+		var a = arguments, x, t, q, g; x = a[0]; q = wse.s.q; g = GET; s = x.Search;
 		if (s) {
 			t = s.FormID; if (t) { q.i.f = t; }
 			t = s.SearchID; if (t) { q.i.q = t; }
 		} GET = g;
-		if (typeof a[1] === "string") { wse.s.r = a[1]; }
+		if (isTxt(a[1])) { wse.s.r = a[1]; }
 		f.get(); wse.cfg();
 		// Here we make sure our values are defined and if the search terms are already defined then get on with the search
 		if (wse.get()) { wse.search(); }
@@ -24,7 +25,7 @@ wse.s = {
 	}
 };
 wse.get = function () {
-	var g = GET, r = false, q = wse.s.q; var i = q.i, v = q.v;
+	var g = GET, r = false, q = wse.s.q, i, v; i = q.i; v = q.v;
 	if (!g) { g = {}; }
 	if (!g[i.q]) { g[i.q] = v.q; } else { r = true; }
 	if (!g[i.s]) { g[i.s] = v.s; }
@@ -36,13 +37,9 @@ wse.get = function () {
 	GET = g; return r;
 };
 wse.cfg = function () {
-	var q = wse.s.q;
-	var s = wse.s.s;
-	var j = f(q.i.f);
-	var i = 1;
-	var o = null;
-	if (j !== null) {
-		if (j.innerHTML === "Service not available") { i = 0; }
+	var q = wse.s.q, s = wse.s.s, form, i = 1, o; form = f(q.i.f);
+	if (form) {
+		if (form.innerText === "Service not available") { i = 0; }
 		else {
 			o = f(q.i.c);
 			if (o.innerHTML === "&nbsp;+&nbsp;") { i = 1; }
@@ -52,11 +49,9 @@ wse.cfg = function () {
 	} return false;
 };
 wse.cfg.ajax = function () {
-	var a = arguments; var x = a[0], j = a[1], g = GET, q = wse.s.q,
-		t = null, i = 0, e1 = ' onfocus="wse.focus(this);"',
-		e2 = ' onkeyup="wse.keyup(this, event);"',
-		e3 = ' onblur="wse.blur(this);"',
-		e4 = '" type="text" title="';
+	var a = arguments, o, x, form, g = GET, q = wse.s.g, t = null, i = 0,
+		e1 = ' onfocus="wse.focus(this);"', e2 = ' onkeyup="wse.keyup(this, event);"',
+		e3 = ' onblur="wse.blur(this);"', e4 = '" type="text" title="'; x = a[0]; form = a[1];
 	if (x !== "") {
 		x = x.replace('<form', '<form action="' + wse.s.s.results + '" method="get" onsubmit="return wse.submit();"');
 		x = x.replace('<a id="wse-cfg">', '<a id="' + q.i.c + '" onclick="return wse.cfg();">');
@@ -76,9 +71,9 @@ wse.cfg.ajax = function () {
 		x = x.replace(/wse(\x2d)pages/g, q.i.p);
 		x = x.replace(/wse(\x2d)total/g, q.i.t);
 		x = x.replace(/wse(\x2d)page/g, q.i.n);
-		var o = "&nbsp;-&nbsp;";
+		o = "&nbsp;-&nbsp;";
 		if (o === wse.cfg.pm) { o = "&nbsp;+&nbsp;"; }
-		j.innerHTML = "\n" + x + "\n";
+		form.innerHTML = "\n" + x + "\n";
 		f(q.i.c).innerHTML = o;
 		f(q.i.q).value = g[q.i.q];
 		o = f(q.i.s);
@@ -105,8 +100,7 @@ wse.cfg.ajax = function () {
 	}
 };
 wse.s2n = function () {
-	var s = arguments[0];
-	var r = 0;
+	var s = arguments[0], r = 0;
 	if (typeof s === "string" && /^[0-9]+(\.[0-9]+)?$/.test(s)) { r = (+s); }
 	return r;
 };
@@ -124,13 +118,9 @@ wse.search = function () {
 	if (!wse.terms) {
 		wse.page.data = null;
 		f.ajax(wse.s.s.txt + "/wse.txt", function () {
-			var a = arguments;
-			var x = a[0].split("\n");
-			var q = wse.s.q;
-			var t = null, o = null, o2 = null;
-			var i = 0, i1 = 0, i2 = 0, i3 = 0, i4 = 0;
-			var l = [], l1 = null, l2 = null, l3 = null;
-			var stopat = GET[q.i.t];
+			var a = arguments, x, q = wse.s.q, t, o, o2, k,
+				i = 0, i1 = 0, i2 = 0, i3 = 0, i4 = 0,
+				l = list(), l1, l2, l3, stopat = GET[q.i.t]; x = a[0].split("\n");
 			for (i = 0;i < x.length;i++) {
 				if (x[i].slice(0, 1) !== "#") {
 					o = {
@@ -197,7 +187,7 @@ wse.search = function () {
 				}
 			} x = null; x = []; t = false;
 			o = GET[q.i.q].split(" ");
-			o2 = ""; var k = { a1 : [], a2 : [], a3 : [], a4 : [], n1 : [], n2 : [] };
+			o2 = ""; k = { a1 : [], a2 : [], a3 : [], a4 : [], n1 : [], n2 : [] };
 			for (i = 0;i < o.length;i++) {
 				if (o2 === "") {
 					if (/^(\+|\-)?\x22/.test(o[i])) {
@@ -344,26 +334,20 @@ wse.search = function () {
 	} else { wse.page(); }
 };
 wse.page = function () {
-	var a = arguments[0];
-	var q = wse.s.q, g = GET;
-	var r = f(q.i.r);
-	var p = g[q.i.n];
+	var a = arguments[0], q = wse.s.q, g = GET, r, p, s = '', f = 0, u, l1 = list(), l2 = list(), l, v, v2, v3, i;
+	p = g[q.i.n]; r = f(q.i.r);
 	if (!a) { a = wse.page.data; }
 	else if (typeof a === "number") {
 		p = a;
 		a = wse.page.data;
 	} else { wse.page.data = a; }
 	if (r && a.length > 0) {
-		var s = "";
-		var f = 0, u = a.length;
-		var l1 = [], l2 = [];
-		var l = g[q.i.l];
-		var v = null, v2 = null, v3 = null;
+		u = a.length; l = g[q.i.l];
 		if (p < 1) { p = 1; }
 		f = (p * l) - l; u = p * l;
 		a.sort();
 		if (g[q.i.s] === "desc")  { a.reverse(); }
-		for (var i = 0;i < a.length;i++) {
+		for (i = 0;i < a.length;i++) {
 			if (/^(\x3c\x21\x2d\x2d)TRUE/i.test(a[i])) { v = true; }
 			v2 = a[i].replace(/^\x3c\x21\x2d\x2d(TRUE|FALSE)\;?/i, "<!--");
 			if (v) { l1.push(v2); }
@@ -392,15 +376,14 @@ wse.page = function () {
 	} return false;
 };
 wse.page.f2l = function () {
-	var a = arguments, q = wse.s.q;
-	var s = "", p = a[0], l = a[1], t = a[2], n = GET[q.i.n];
+	var a = arguments, q = wse.s.q, s = '', p, l, t, n, i, from, until, tmp;
+	p = a[0]; l = a[1]; t = a[2]; n = GET[q.i.n];
 	if (t > 1) {
-		var i = Math.floor(p / 2);
-		var f = n - i, u = (n + i) + 1;
+		i = Math.floor(p / 2); from = n - i; until = (n + i) + 1;
 		t = Math.ceil(t / l);
-		if (f < 1) { f = 1; }
-		if (u > t) { u = t + 1; }
-		var tmp = '<a href="?' + q.i.q + '=' + encodeURI(GET[q.i.q]);
+		if (from < 1) { from = 1; }
+		if (until > t) { until = t + 1; }
+		tmp = '<a href="?' + q.i.q + '=' + encodeURI(GET[q.i.q]);
 		if (f(q.i.c).innerHTML === "&nbsp;-&nbsp;") {
 			tmp += '&amp;' + q.i.s + '=' + GET[q.i.s] + '&amp;' +
 				q.i.b + '=' + GET[q.i.b] + '&amp;' +
@@ -417,22 +400,20 @@ wse.page.f2l = function () {
 	} return s;
 };
 wse.page.x2y = function () {
-	var a = arguments;
-	var x = a[0], y = a[1], z = a[2], r = "";
-	if (!x) { x = 1; }
+	var a = arguments, x, y, z, r = '', g = GET, n, k, tmp, i;
+	x = a[0]; y = a[1]; z = a[2]; if (!x) { x = 1; }
 	if (y && z) {
 		if (y > z) { y = z; }
 		if (x > 1) { x++; }
 		r = "<p>" + x + " to " + y + " of " + z + " for";
-		var g = GET, n = wse.s.q.i, k = wse.terms;
-		var tmp = '';
+		n = wse.s.q.i; k = wse.terms; tmp = '';
 		if (f(n.c).innerHTML === "&nbsp;-&nbsp;") {
 			tmp += '&amp;' + n.s + '=' + GET[n.s] + '&amp;' +
 				n.b + '=' + GET[n.b] + '&amp;' +
 				n.l + '=' + GET[n.l] + '&amp;' +
 				n.p + '=' + GET[n.p] + '&amp;' +
 				n.t + '=' + GET[n.t] + '&amp;';
-		} for (var i = 0;i < k.length;i++) {
+		} for (i = 0;i < k.length;i++) {
 			r += ' <a href="?' + n.q + '=' +
 				encodeURI(k[i]) + tmp + '">' + k[i] + '</a>';
 		} r += "</p>";
@@ -440,19 +421,18 @@ wse.page.x2y = function () {
 };
 wse.d = {
 	create : function () {
-		var e = f("wse-d"), l = [], i;
-		var li = f.tags(e, "input"), ls = f.tags(e, "select");
+		var e = f("wse-d"), l = list(), i, li, ls, t;
+		li = f.tags(e, "input"); ls = f.tags(e, "select");
 		for (i = 0;i < li.length;i++) { l.push(li[i]); }
 		for (i = 0;i < ls.length;i++) { l.push(ls[i]); }
 		li = null; li = (+f("to").value);
 		ls = null; ls = {};
 		for (i = 0;i < l.length;i++) { ls[l[i].id] = l[i].value; }
 		i = f("to_type").value;
-		var t = build(li, i, ls);
+		t = build(li, i, ls);
 		f("d-info").innerHTML += t;
 	}, build : function () {
-		var a = arguments, r = "";
-		var o = a[2], t, i, n;
+		var a = arguments, r = '', o, t, i, n; o = a[2];
 		switch (a[0]) {
 		case 1: break;
 		case 4:
@@ -544,7 +524,7 @@ wse.d = {
 					if (o.imgH) { r += '^height=' + o.imgH; }
 				} if (o.s) {
 					t = o.s; r += ';;sub';
-					for (var i = 0;i < t.length;i++) {
+					for (i = 0;i < t.length;i++) {
 						if (t[i].Name) {
 							r += '^name=' + t[i].aName;
 							if (t[i].aURL) { r += ';url=' + t[i].aURL; }
@@ -553,7 +533,7 @@ wse.d = {
 						}
 					} t = null;
 				} if (o.o) {
-					t = o.o; r += ';;other'
+					t = o.o; r += ';;other';
 					if (t.Genre) { r += '^genre=' + t.Genre; }
 					if (t.Content) { r += '^content=' + t.Content; }
 					if (t.Rank) { r += '^rating=' + t.Rank; }
@@ -575,7 +555,7 @@ wse.d = {
 					r += '</img>';
 				} if (o.s) {
 					t = o.s; r += '<sub>';
-					for (var i = 0;i < t.length;i++) {
+					for (i = 0;i < t.length;i++) {
 						if (t[i].Name) {
 							r += '<sl><n>' + t[i].aName + '</n>';
 							if (t[i].aURL) { r += '<u>' + t[i].aURL + '</u>'; }
@@ -585,7 +565,7 @@ wse.d = {
 						}
 					} t = null; r += '</sub>';
 				} if (o.o) {
-					t = o.o; r += '<other>'
+					t = o.o; r += '<other>';
 					if (t.Genre) { r += '<g>' + t.Genre; }
 					if (t.Content) { r += '<c>' + t.Content; }
 					if (t.Rank) { r += '<r>' + t.Rank; }
@@ -602,7 +582,7 @@ wse.d = {
 	}, file : function () { var t = ""; wse.d.change(t); }, change : function () {}
 };
 wse.dat = function () {
-	var a = arguments[0]
+	var a = arguments[0];
 	return true;
 };
 wse.dat.verl = function () {
@@ -625,10 +605,9 @@ wse.focus = function () {
 	}
 };
 wse.keyup = function () {
-	var a = arguments;
-	var e = a[0], k = a[1], i = wse.s.q.i;
-	if (!k) { k = self.event; }
-	var n = k.which ? k.which : k.keyCode;
+	var a = arguments, e, k, i = wse.s.q.i, n;
+	e = a[0]; k = a[1];
+	if (!k) { k = self.event; } n = k.which ? k.which : k.keyCode;
 	if (e && e.id && e.value) {
 		if (e.id === i.l || e.id === i.p) {
 			e.value = e.value.replace(/[^\d]/g, ""); }

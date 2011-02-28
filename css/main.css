@@ -1,15 +1,15 @@
 html, html * {
-	background:inherit;
-	border:none;
-	color:inherit;
-	display:inline-block;
-	font-family:sans-serif;
-	font-size:medium;
-	margin:0px;
-	overflow:auto;
-	padding:0px;
-	text-align:left;
-	vertical-align:text-top;
+	background: inherit;
+	border: none;
+	color: inherit;
+	display: inline-block;
+	font-family: sans-serif;
+	font-size: medium;
+	margin: 0px;
+	overflow: auto;
+	padding: 0px;
+	text-align: left;
+	vertical-align: text-top;
 	z-index:0
 } html, head, head *, body, div, form, option, p, h3 { display:block }
 html { background:#fff; color:#000 }
@@ -19,14 +19,14 @@ img { cursor:default }
 label, input, select, option { font-size:small }
 a:link { color:#00f; cursor:pointer }
 a:hover { color:#09f }
-.jse-row { margin-top:1px }
-.jse-row label { width:26% }
-.jse-row input, .jse-row select, .jse-row textarea, #jse-row span { background:#9cf }
-.jse-row input, .jse-row select, .jse-row textarea { width:74% }
-#jse-row a { width:16% }
-#jse-row span { width:84% }
-#jse-row span input { width:85% }
-#jse-row span button {
+.wse-row { margin-top:1px }
+.wse-row label { width:26% }
+.wse-row input, .wse-row select, .wse-row textarea, #wse-row span { background:#9cf }
+.wse-row input, .wse-row select, .wse-row textarea { width:74% }
+#wse-row a { width:16% }
+#wse-row span { width:84% }
+#wse-row span input { width:85% }
+#wse-row span button {
 	cursor:pointer;
 	width:15%
 }

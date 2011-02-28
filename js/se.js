@@ -1,127 +1,252 @@
-var WSE = obj(); function wse () {
-	var a = arguments[0], t = INI.wse.m.t;
-	fujio.ajax[t](INI.fujio.m.i + 'wse/wse.' + t, wse['Q' + t], a);
+/*jslint browser: true, onevar: true, white: false, undef: false, forin: true, maxerr: 30*/
+function wse() {
+	var a = arguments[0], t = INI.wse.m.t, m = INI.fujio.m;
+	f.ajax[t](m.r + m.i + 'wse/wse.' + t, wse['Q' + t], a);
 	return false;
 } wse.init = function () {
 	var a = arguments[0];
-	if (!a || !fujio.is(a, 'text')) { a = 'wse.ini'; }
-	wse.ini(); fujio.ajax.ini(a, wse.ini);
+	if (!a || !isTxt(a)) { a = 'wse.ini'; }
+	wse.ini(); f.ajax.ini(a, wse.ini);
 }; wse.ini = function () {
-	var a = arguments[0], i, l, o = obj(), t; if (!a) { a = obj(); }
-	if (!a.Main) { a.Main = obj(); } t = a.Main; a.Main = null;
-	if (!t.type) { t.type = 'xml'; } if (!t.genreList) { t.genreList = ''; } if (!t.byList) { t.byList = ''; }
-	o.m = obj(); o.m.t = t.type; o.m.gl = t.genreList.split(','); o.m.bl = t.byList.split(',');
-	if (!a.Search) { a.Search = obj(); } t = a.Search; a.Search = null;
-	if (!t.form) { t.form = 'wse'; } if (!t.search) { t.search = 'q'; }
-	if (!t.genre) { t.genre = 'g'; } if (!t.sort) { t.sort = 's'; }
-	if (!t.by) { t.by = 'b'; } if (!t.results) { t.results = 'r'; }
-	if (!t.pages) { t.pages = 'p'; } if (!t.page) { t.page = 'n'}
-	if (!t.total) { t.total = 't'; } o.q = obj(); o.q.f = t.form; o.q.q = t.search; o.q.g = t.genre; o.q.s = t.sort;
-	o.q.b = t.by; o.q.r = t.results; o.q.p = t.pages; o.q.n = t.page; o.q.t = t.total;
-	if (!a.SearchLabels) { a.SearchLabels = obj(); } t = a.SearchLabels; a.SearchLabels = null;
-	if (!t.genre) { t.genre = 'Genre'; } if (!t.sort) { t.sort = 'Sort'; }
-	if (!t.by) { t.by = 'By'; } if (!t.results) { t.results = 'Results'; }
-	if (!t.pages) { t.pages = 'Pages'; } if (!t.total) { t.total = 'Totals'; } o.ql = obj(); o.ql.q = t.search;
-	o.ql.g = t.genre; o.ql.s = t.sort; o.ql.b = t.by; o.ql.r = t.results; o.ql.p = t.pages; o.ql.t = t.total;
-	if (!a.SearchTips) { a.SearchTips = obj(); } t = a.SearchTips; a.SearchTips = null;
-	if (!t.search) { t.search = 'Enter the terms of which you wish to search with'; }
-	if (!t.genre) { t.genre = 'Select the Categories you want to restrict the search to'; }
-	if (!t.sort) { t.sort = 'Sort by Ascending or Descending order'; }
-	if (!t.by) { t.by = 'Sort by 1 of the following parameters'; }
-	if (!t.results) { t.results = 'Maximum results to show per page'; }
-	if (!t.pages) { t.pages = 'Maximum page links to show per page. Example: 3 would produce something like this "...5, 6, 7..."'; }
-	if (!t.total) { t.total = 'Maximum number of results to find, use this if you keep getting messages about script time'; }
-	o.qt = obj(); o.qt.q = t.search; o.qt.g = t.genre; o.qt.s = t.sort; o.qt.b = t.by; o.qt.r = t.results; o.qt.p = t.pages; t = t.total;
-	if (!a.SearchValues) { a.SearchValues = obj(); } t = a.SearchValues; a.SearchValues = null;
-	if (!t.search) { t.search = 'Search...'; } if (!t.genre) { t.genre = ''; }
-	if (!t.sort) { t.sort = 'asc'; } if (!t.by) { t.by = 'name'; }
-	if (!t.results) { t.results = '10'; } if (!t.pages) { t.pages = '10'; }
-	if (!t.total) { t.total = '0'; }
-	o.qv = obj(); o.qv.q = t.search; o.qv.g = t.genre; o.qv.s = t.sort; o.qv.b = t.by; o.qv.r = t.results; o.qv.p = t.pages; t = t.total;
-	if (!a.SearchData) { a.SearchData = obj(); } t = a.SearchData; a.SearchData = null;
-	if (!t.linkName) { t.linkName = '?????'} if (!t.linkFrame) { t.linkFame = ''; }
-	if (!t.imgAlt) { t.imgAlt = ''; } if (!t.otherGenre) { t.otherGenre = 'None'; }
-	if (!t.otherTags) { t.otherTags = ''; }
-	o.qd = obj(); o.qd.ln = t.linkName; o.qd.lf = t.linkFrame; o.qd.ia = t.imgAlt; o.qd.og = t.otherGenre; o.qd.ot = t.otherTags;
-	if (!a.Classes) { a.Classes = obj(); } t = a.Classes; a.Classes = null;
-	if (!t.result) { t.result = 'result'; } if (!t.sticky) { t.sticky = 'sticky'; }
-	if (!t.pageLinks) { t.pageLinks = 'pagelinks'; } o.c = obj(); r : t.result, s : t.sticky, pl : t.pageLinks;
-	if (!a.Genres) { a.Genres = obj(); } t = a.Genres; a.Genres = null; l = o.m.gl;
-	for (i = 0;i < l.length;i++) { if (!t[l[i]]) { t[l[i]] = l[i]; } } o.g = t;
-	if (!a.Sort) { a.Sort = obj(); } t = a.Sort; a.Sort = null;
-	if (!t.asc) { t.asc = 'A-Z'; } if (!t.desc) { t.desc = 'Z-A'; } o.s = obj(); o.s.a = t.asc; o.s.d = t.desc;
-	if (!a.By) { a.By = obj(); } t = a.By; a.By = null; l = o.m.bl;
-	for (i = 0;i < l.length;i++) { if (!t[l[i]]) { t[l[i]] = l[i]; } } o.b = t;
-	t = null; a = null; l = null; INI.wse = o; o = null;
-}; wse.Q = function () {
-	var a = arguments[0], e, g = GET, i, j, l, k, m, n, o, p = true, s, r = list(), t, w = INI.wse;
-	s = (+g[w.q.t]); if (s === 0) { s = a.length; }
-	for (i = 0, t = 0;i < a.length, t < s;i++) {
-		o = a[i];
-		o.o.g = o.o.g.split(',').sort().join(',');
-		if (p) {
-			e = o.o.s + '<!--';
-			switch (g[w.q.b]) {
-			case 'genre': e += o.o.g + ';' + o.l[0].n.toLowerCase() + ';' + o.o.r; break;
-			case 'rating': e += o.o.r + ';' + o.l[0].n.toLowerCase() + ';' + o.o.g; break;
-			default: e += o.l[0].n.toLowerCase() + ';' + o.o.g + ';' + o.o.r; break;
-			} e += '--><div class="result"><div class="title">';
-			m = o.l; if (m[0].u) {
-				e += '<a href="' + m[0].n + '"';
-				if (m[0].f) { e += ' target="' + m[0].f + '"'; }
-			} else { e += '<b'; }
-			if (m[0].t) { e += ' title="' + m[0].t + '"'; } e += '>' + m[0].n;
-			if (m[0].u) { e += '</a>'; } else { e += '</b>'; }
-			if (m.l.length > 1) {
-				e += '</div><div class="sublinks">';
-				for (j = 0;j < m.length) {
-					if (m[j].u) {
-						e += '<a href="' + m[j].n + '"';
-						if (m[j].f) { e += ' target="' + m[j].f + '"'; }
-					} else { e += '<b'; }
-					if (m[j].t) { e += ' title="' + m[j].t + '"'; } e += '>' + m[j].n;
-					if (m[j].u) { e += '</a>'; } else { e += '</b>'; }
-				}
-			} m = o.i; if (m.u || o.o.c) { e += '</div><div class="content">'; }
-			if (m.u) {
-				e += '<img src="' + m.u + '"';
-				if (m.s || m.w || m.h) {
-					e += ' style="';
-					if (m.s) { e += 'width:' + m.s + ';height:' + m.s + ';'; }
-					else {
-						if (m.w) { e += 'width:' + m.w + ';'; }
-						if (m.h) { e += 'height:' + m.h + ';'; }
-					} e += '"';
-				} e += ' alt="' + m.a + '" title="' + m.a + '" />'; 
-			} m = o.o;
-			if (m.c) { if (o.i.u) {	e += '<span>' + m.c; + '</span>'; }
-				else { e += '<div>' + m.c + '</div>'; }
-			} e += '</div><div class="data"><div>Genre: ';
-			if(!m.g) { e += 'None'; } else {
-				n = m.g.split(','); e += w.g[0];
-				for (k = 1;k < n.length;k++) { e += ', ' + w.g[n[k]]; }
-			} e += '</div><div>Rating: '; n = m.r;
-			for (k = 0;k < n;k++) { e += '*'; } e += '</div><div class="tags">';
-			n = m.t.split(',');
-			for (k = 0;k < n.length;k++) { e += '<a href="?' + w.q.q + '=' + n[k] + '">' + n[k] + '</a>' }
-			e += '</div></div></div>'; r.push(e); t++; e = null;
+	var x = arguments[0], i, j, l, o = obj(), t;
+	o.m = obj(); o.m.t = 'xml'; o.m.gl = list(); o.m.bl = list();
+	o.q = obj(); o.q.f = 'wse'; o.q.q = 'q'; o.q.g = 'g'; o.q.s = 's';
+		o.q.b = 'b'; o.q.r = 'r'; o.q.p = 'p'; o.q.n = 'n'; o.q.t = 't';
+	o.ql = obj(); o.ql.g = 'Genre'; o.ql.s = 'Sort'; o.ql.b = 'By';
+		o.ql.r = 'Results'; o.ql.p = 'Pages'; o.ql.t = 'Total';
+	o.qt = obj(); o.qt.s = 'Enter the terms of which you wish to search with';
+		o.qt.g = 'Select the Categories you want to restrict the search to';
+		o.qt.s = 'Sort by Ascending or Descending order';
+		o.qt.b = 'Sort by 1 of the following parameters';
+		o.qt.r = 'Maximum results to show per page';
+		o.qt.p = 'Maximum page links to show per page. Example: 3 would produce something like this "...5, 6, 7..."';
+		o.qt.t = 'Maximum number of results to find, use this if you keep getting messages about script time';
+	o.qv = obj(); o.qv.q = 'Search...'; o.qv.g = ''; o.qv.s = 'asc';
+		o.qv.b = 'nsme'; o.qv.r = '10'; o.qv.p = '10'; o.qv.t = '0';
+	o.qd = obj(); o.qd.ln = '?????'; o.qd.lf = ''; o.qd.ia = '';
+		o.qd.og = 'None'; o.qd.ot = '';
+	o.c = obj(); o.c.r = 'result'; o.c.s = 'sticky'; o.c.pl = 'pagelinks';
+	o.s = obj(); o.s.a = 'A-Z'; o.s.d = 'Z-A'; o.g = obj(); o.b = obj();
+	if (x) {
+		for (i in x) {
+			t = x[i];
+			switch (i) {
+			case 'Main': for (j in t) {
+				switch (j) {
+				case 'type': o.m.t = t[j]; break;
+				case 'genreList': o.m.gl = t[j].split(','); break;
+				case 'byList': o.m.bl = t[j].split(','); break; } } break;
+			case 'Search': for (j in t) {
+				switch (j) {
+				case 'form': o.q.f = t[j]; break;
+				case 'search': o.q.q = t[j]; break;
+				case 'genre': o.q.g = t[j]; break;
+				case 'sort': o.q.s = t[j]; break;
+				case 'by': o.q.b = t[j]; break;
+				case 'results': o.q.r = t[j]; break;
+				case 'pages': o.q.p = t[j]; break;
+				case 'page': o.q.n = t[j]; break;
+				case 'total': o.q.t = t[j]; break; } } break;
+			case 'SearchLabels': for (j in t) {
+				switch (j) {
+				case 'search': o.ql.q = t[j]; break;
+				case 'genre': o.ql.g = t[j]; break;
+				case 'sort': o.ql.s = t[j]; break;
+				case 'by': o.ql.b = t[j]; break;
+				case 'results': o.ql.r = t[j]; break;
+				case 'pages': o.ql.p = t[j]; break;
+				case 'total': o.ql.t = t[j]; break; } } break;
+			case 'SearchTips': for (j in t) {
+				switch (j) {
+				case 'search': o.qt.q = t[j]; break;
+				case 'genre': o.qt.g = t[j]; break;
+				case 'sort': o.qt.s = t[j]; break;
+				case 'by': o.qt.b = t[j]; break;
+				case 'results': o.qt.r = t[j]; break;
+				case 'pages': o.qt.p = t[j]; break;
+				case 'total': o.qt.t = t[j]; break; } } break;
+			case 'SearchValues': for (j in t) {
+				switch (j) {
+				case 'search': o.qv.q = t[j]; break;
+				case 'genre': o.qv.g = t[j]; break;
+				case 'sort': o.qv.s = t[j]; break;
+				case 'by': o.qv.b = t[j]; break;
+				case 'results': o.qv.r = t[j]; break;
+				case 'pages': o.qv.p = t[j]; break;
+				case 'total': o.qv.t = t[j]; break; } } break;
+			case 'SearchData': for (j in t) {
+				switch (j) {
+				case 'linkName': o.qd.ln = t[j]; break;
+				case 'linkFrame': o.qd.lf = t[j]; break;
+				case 'imgAlt': o.qd.ia = t[j]; break;
+				case 'otherGenre': o.qd.og = t[j]; break;
+				case 'otherTags': o.qd.ot = t[j]; break; } } break;
+			case 'Classes': for (j in t) {
+				switch (j) {
+				case 'result': o.c.r = t[j]; break;
+				case 'sticky': o.c.s = t[j]; break;
+				case 'pageLinks': o.c.pl = t[j]; break; } } break;
+			case 'Genres': l = o.m.gl; for (j = 0;j < l.length;j++)
+				{ if (!t[l[j]]) { t[l[j]] = l[j]; } } o.g = t; break;
+			case 'Sort': for (j in t) {
+				switch (j) {
+				case 'asc': o.s.a = t[j]; break;
+				case 'desc': o.s.d = t[j]; break; } } break;
+			case 'By': l = o.m.bl; for (j = 0;j < l.length;j++)
+				{ if (!t[l[j]]) { t[l[j]] = l[j]; } } o.b = t; break;
+			} t = null; l = null;
 		}
+	} x = null; INI.wse = o; o = null;
+}; wse.Qnull = function () {};
+wse.Q = function () {
+	var a = arguments[0], g = GET, i, j = list(), l = list(), k = list(), m = '', n, o, p = '',
+		s, sd, st1, st2, st3, st4, st5, st6, r = list(),
+		r1 = re('^(title|genre)\\:'), r2 = ('^(\\+|\\-)(title|genre)\\:'),
+		r3 = re('^info\\:'), r4 = re('^(\\+|\\-)info\\:'),
+		r5 = re('^rating\\:'), r6 = re('^(\\+|\\-)rating\\:'), t, w = INI.wse; 
+	s = g[w.q.q];
+	for (i = 0;i < s.length;i++) {
+		sd = lcase(s.charAt(i));
+		switch (m) {
+		case 'any':
+			if (sd === '\\') { t += sd + s.charAt(i + 1); i++; } else {
+				if (p) { if (sd === p) { p = ''; i++; } t += sd; }
+				else if (sd === '"' || sd === "'" || sd === '/') { p = sd; t += sd; }
+				else if (sd === ' ') { l.push(t); m = ''; p = ''; } else { t += sd; }
+			} break;
+		case '+any':
+			if (sd === '\\') { t += sd + s.charAt(i + 1); i++; } else {
+				if (p) { if (sd === p) { p = ''; i++; } t += sd; }
+				else if (sd === '"' || sd === "'" || sd === '/') { p = sd; }
+				else if (sd === ' ') { l.push(t); m = ''; p = ''; } else { t += sd; }
+			} break;
+		case '-any':
+			if (sd === '\\') { t += sd + s.charAt(i + 1); i++; } else {
+				if (p) { if (sd === p) { p = ''; i++; } t += sd; }
+				else if (sd === '"' || sd === "'" || sd === '/') { p = sd; t += sd; }
+				else if (sd === ' ') { l.push(t); m = ''; p = ''; } else { t += sd; }
+			} break;
+		case 'var':
+			if (sd === '\\') { t += sd + s.charAt(i + 1); i++; } else {
+				if (p) { if (sd === p) {
+					if (s.charAt(i + 1) === ',') { t += ',';
+						if (s.charAt(i + 2) === ' ') { i += 2; } else { i++; }
+					} else { i++; } p = ''; } t += sd; }
+				else if (sd === '"' || sd === "'" || sd === '/') { p = sd; t += sd; }
+				else if (sd === ' ') { l.push(t); m = ''; p = ''; } else { t += sd; }
+			} break;
+		case '+var':
+			if (sd === '\\') { t += sd + s.charAt(i + 1); i++; } else {
+				if (p) { if (sd === p) {
+					if (s.charAt(i + 1) === ',') { t += ',';
+						if (s.charAt(i + 2) === ' ') { i += 2; } else { i++; }
+					} else { i++; } p = ''; } t += sd; }
+				else if (sd === '"' || sd === "'" || sd === '/') { p = sd; t += sd; }
+				else if (sd === ' ') { l.push(t); m = ''; p = ''; } else { t += sd; }
+			} break;
+		case '-var':
+			if (sd === '\\') { t += sd + s.charAt(i + 1); i++; } else {
+				if (p) { if (sd === p) {
+					if (s.charAt(i + 1) === ',') { t += ',';
+						if (s.charAt(i + 2) === ' ') { i += 2; } else { i++; }
+					} else { i++; } p = ''; } t += sd; }
+				else if (sd === '"' || sd === "'" || sd === '/') { p = sd; t += sd; }
+				else if (sd === ' ') { l.push(t); m = ''; p = ''; } else { t += sd; }
+			} break;
+		default: t = lcase(s.slice(i, 7));
+			if (r1.test(t)) { t = s.slice(i, 6); i += 6; m = 'var'; }
+			else if (r2.test(t)) { t = s.slice(i + 1 , 6); i += 7; m = sd + 'var'; }
+			else if (r3.test(t)) { t = s.slice(i, 5); i += 5; m = 'var'; }
+			else if (r4.test(t)) { t = s.slice(i + 1, 5); i += 6; m = sd + 'var'; }
+			else if (r5.test(t)) { t = s.slice(i, 7); i += 7; m = 'var'; }
+			else if (r6.test(t)) { t = s.slice(i + 1, 7); i += 8; m = sd + 'var'; }
+			else if (sd === '+' || sd === '-') { m = sd + 'any'; t = ''; }
+			else if (sd !== ' ') { m = 'any';
+				if (sd === '\\') { t = s.charAt(i + 1); i++; } t = sd; } break;
+		}
+	} p = false;
+	t = 0; s = (+g[w.q.t]); if (s === 0) { s = a.length; }
+	for (i = 0;i < a.length;i++) {
+		if (t < s) {
+			o = a[i]; o.o.g = o.o.g.split(',').sort().join(','); sd = '';
+			sd += 'title:' + o.l[0].n + ';'; sd += 'rating:' + o.o.r + ';';
+			sd += o.o.g.split(',').join(';genre:') + ';';
+			sd += 'info:' + o.o.c + ';'; sd = lcase(sd);
+			if (st1.length || st2.length > 0) {
+				for (j = 0;j < st1.length;j++) {
+					if (sd.indexOf(st1[j]) >= 0) { p = true; j = st1.length; } }
+				for (j = 0;j < st2.length;j++) {
+					if (st1[j].test(sd)) { p = true; j = st1.length; } }
+			} else { p = true; }
+			for (j = 0;j < st3.length;j++) {
+				if (sd.indexOf(st3[j]) < 0) { p = false; j = st3.length; } }
+			for (j = 0;j < st4.length;j++) {
+				if (!st4[j].test(sd)) { p = false; j = st4.length; } }
+			for (j = 0;j < st5.length;j++) {
+				if (sd.indexOf(st5[j]) >= 0) { p = false; j = st5.length; } }
+			for (j = 0;j < st6.length;j++) {
+				if (st6[j].test(sd)) { p = false; j = st6.length; } }
+			if (p) {
+				sd = o.o.s + '<!--';
+				switch (g[w.q.b]) {
+				case 'genre': sd += o.o.g + ';' + lcase(o.l[0].n) + ';' + o.o.r; break;
+				case 'rating': sd += o.o.r + ';' + lcase(o.l[0].n) + ';' + o.o.g; break;
+				default: sd += lcase(o.l[0].n) + ';' + o.o.g + ';' + o.o.r; break;
+				} sd += '--><div class="result'; if (o.o.s) { sd += ' sticky'; }
+				sd += '"><div class="title">'; m = o.l; if (m[0].u) {
+					sd += '<a href="' + m[0].n + '"';
+					if (m[0].f) { sd += ' target="' + m[0].f + '"'; }
+				} else { sd += '<b'; }
+				if (m[0].t) { sd += ' title="' + m[0].t + '"'; } sd += '>' + m[0].n;
+				if (m[0].u) { sd += '</a>'; } else { sd += '</b>'; }
+				if (m.l.length > 1) {
+					sd += '</div><div class="sublinks">';
+					for (j = 1;j < m.length;j++) {
+						if (m[j].u) {
+							sd += '<a href="' + m[j].n + '"';
+							if (m[j].f) { sd += ' target="' + m[j].f + '"'; }
+						} else { sd += '<b'; }
+						if (m[j].t) { sd += ' title="' + m[j].t + '"'; } sd += '>' + m[j].n;
+						if (m[j].u) { sd += '</a>'; } else { sd += '</b>'; }
+					}
+				} m = o.i; if (m.u || o.o.c) { sd += '</div><div class="content">'; }
+				if (m.u) {
+					sd += '<img src="' + m.u + '"';
+					if (m.s || m.w || m.h) {
+						sd += ' style="';
+						if (m.s) { sd += 'width:' + m.s + ';height:' + m.s + ';'; }
+						else {
+							if (m.w) { sd += 'width:' + m.w + ';'; }
+							if (m.h) { sd += 'height:' + m.h + ';'; }
+						} sd += '"';
+					} sd += ' alt="' + m.a + '" title="' + m.a + '" />'; 
+				} m = o.o;
+				if (m.c) { if (o.i.u) {	sd += '<span>' + m.c + '</span>'; }
+					else { sd += '<div>' + m.c + '</div>'; }
+				} sd += '</div><div class="data"><div>Genre: ';
+				if(!m.g) { sd += 'None'; } else {
+					n = m.g.split(','); sd += w.g[0];
+					for (k = 1;k < n.length;k++) { sd += ', ' + w.g[n[k]]; }
+				} sd += '</div><div>Rating: '; n = m.r;
+				for (k = 0;k < n;k++) { sd += '*'; } sd += '</div><div class="tags">';
+				n = m.t.split(',');
+				for (k = 0;k < n.length;k++) { sd += '<a href="?' + w.q.q + '=' + n[k] + '">' + n[k] + '</a>'; }
+				sd += '</div></div></div>'; r.push(sd); t++; 
+			} sd = null;
+		} else { i = a.length; }
 	} wse.show(r);
 }; wse.Qxml = function () {
 	var a = arguments, e, i, j, m, o, r = list(), t; e = a[1]; a = a[0];
-	if (a) {
-		a = fujio.tags(a, 'xml')[0];
-		a = fujio.kids(a, 'i');
+	if (a) { a = f.tags(a, 'xml')[0]; a = f.kids(a, 'i');
 		for (i = 0;i < a.length;i++) {
-			o = obj(); o.l = list();
-			m = fujio.tags(fujio.kids(a[i], 'l')[0], 'i');
+			o = obj(); o.l = list(); m = f.tags(f.kids(a[i], 'l')[0], 'i');
 			for (j = 0;j < m.length;j++) { t = obj(); t.u = m[j].url; t.f = m[j].frame; t.t = m[j].tip; t.v = m[j].nodeValue; o.l.push(t); }
-			m = fujio.kids(a[i], 'i'); t = obj();
+			m = f.kids(a[i], 'i'); t = obj();
 			t.u = m.url; t.s = m.size; t.w = m.width; t.h = m.height; t.a = m.nodeValue;
-			o.i = t; m = fujio.kids(a[i], 'o'); t = obj();
+			o.i = t; m = f.kids(a[i], 'o'); t = obj();
 			t.s = m.sticky; t.g = m.genre; t.t = t.tags; t.r = m.rating; t.c = m.nodeValue.replace('[', '<').replace(']', '>');
 			o.o = t; r.push(o);
 		} wse.Q(r);
 	} else if (e.submit) { e.submit(); }
 	else { loc.href = e.href; }
-};
+}; wse.Qjson = function () {};
