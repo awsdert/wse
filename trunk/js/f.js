@@ -1,51 +1,88 @@
-var self = this, GET = null, INI = {};
+/*jslint browser: true, onevar: true, white: false, undef: false, forin: true, maxerr: 30*/
+var self = this, GET = null, INI = null;
 var doc = self.document, loc = self.location, nav = self.navigator;
-self.onerror = function () {
-	var a = arguments;
-	alert('JavaScript Error...' +
+// Error Handler
+self.onerror = function () { var a = arguments;
+	alert('JavaScript Error...\n\n' +
 		'\nFile: ' + a[1] + '\nLine: ' + a[2] +
 		'\nDescription: ' + a[0]); };
+// Quick case change
+function lcase () { return arguments[0].toLowerCase(); }
+function ucase () { return arguments[0].toUpperCase(); }
+function pcase () { return arguments[0].replace(re('\\w\\S*', 'g'), function() {
+	var a = arguments[0]; return ucase(a.charAt(0)) + lcase(a.substr(1)); }); }
+/* Quick Declarers
+Useful for browsers that do not support direct creation (o = {}; etc) of these */
+function list () { var a = arguments, r = new Array(), i;
+	for (i = 0;i < a.length;i++) { r[i] = a[i]; } return r; }
+function obj () { return new Object(); }
+function re () { var a = arguments, r, t = RegExp; if (!a[0] || !isTxt(a[0])) { a[0] = ''; }
+	if (a[1] && isTxt(a[1])) { r = new t(a[0], a[1]); } else { r = new t(a[0]); } return r; }
+// Quick Testers
+function is () { var a = arguments, i, r = false; if (a.length === 3) {
+		for (i = 0;i < a.length;i++) { if (!isNum(a[i])) { a[i] = null; } }
+		if (a && a[2] >= a[0] && a[2] <= a[1]) { r = true; }
+	} else { if (typeof a[0] === 'unkown') { r = true; } } return r; }
+function isVar () { var a = arguments[0], r = false; if (isTxt(a) || isNum(a) || isBool(a)) { r = true; } return r; }
+function isTxt () { var r = false; if (typeof arguments[0] === 'string') { r = true; } return r; }
+function isBool () { var a = arguments[0], r = false, t = re('^(true|false)$', 'i');
+		if (typeof a === 'boolean' || (isTxt(a) && t.test(a))) { r = true; } return r; }
+function isNum () { var r = false; if (!isNaN(arguments[0])) { r = true; } return r; }
+function isMethod () { var r = false; if (typeof arguments[0] === 'function') { r = true; } return r; }
+function isObj () { var r = false; if (typeof arguments[0] === 'object') { r = true; } return r; }
+function isList () { var a = arguments[0], r = false; if (typeof a === 'object') {
+		if (a[0]) { r = true; }
+		else { try { a[0] = 0; a[0] = null; r = true; } catch (e) {} }
+	} return r; }
+function isArray () { var a = arguments[0], r = false; if (a && a.splice) { r = true; } return r; }
+function isDom () { var a = arguments[0], r = false; if (a && a.getElementsByTagName) { r = true; } return r; }
+function isDoc () { var a = arguments[0], r = false; if (a && (a.getElementById || a.all)) { r = true; } return r; }
+function isHtml () { var a = arguments[0], r = false; if (a && a.innerHTML) { r = true; } return r; }
+// Main Code
 function fujio () {
 	var a = arguments, r = null, d = doc, i = 0;
-	if (a.length > 1) { d = a[0]; i = 1; } a = a[i];
+	if (a.length > 1) { if (isDoc(a[0])) { d = a[0]; } i = 1; } a = a[i];
 	if (d.getElementById) { r = d.getElementById(a); }
 	else if (d.all) { r = d.all[a]; } return r;
-}; fujio.init = function () {
-	var a = arguments[0];
-	if (fujio.is(fujio.uri)) { GET = fujio.uri(loc.href).GET; }
-	if (fujio.is(fujio.ajax.ini))
-		{ fujio.ajax.ini(a, function () { INI.fujio = arguments[0]; }, null); }
-	if (fujio.is(fujio.ui)) { fujio.ui(); }
+} fujio.init = function () {
+	var a = arguments[0], t, t2; INI = obj();
+	if (!a || !isTxt(a)) { a = 'fujio.ini'; }
+	t = fujio.uri; if (t) { GET = t(loc.href).GET; }
+	t = fujio.ajax; t2 = fujio.init.ini;
+	if (t && t.ini) { t.ini(a, t2); } else { t2(); }
+	t = fujio.ui; if (t && t.init) { t.init(); }
+}; fujio.init.init = function () {
+	var a = arguments[0], o = obj(), i, n;
+	o.m = obj(); o.m.r = ''; o.m.i = ''; o.a = obj(); o.a.add = 'false';
+	o.a.u = 'f-ajax'; o.a.m = 'post'; o.a.a = 'true'; o.p = obj();
+	o.p.add = 'false'; o.p.u = 'f-parse'; o.u = obj(); o.u.add = 'false';
+	o.u.u = 'f-ui'; if(a) {
+		for (i in a) {
+			switch (i) { case 'Main': for (n in a[i]) {
+					switch (n) { case 'root': o.m.r = a[i][n]; break;
+					case 'inc': o.m.i = a[i][n]; break; } } break;
+			case 'AJAX': for (n in a[i]) {
+					switch (n) { case 'add': o.a.add = a[i][n]; break;
+					case 'url': o.a.u = a[i][n]; break;
+					case 'method': o.a.m = a[i][n]; break;
+					case 'async': o.a.a = a[i][n]; break; } } break;
+			case 'Parse': for (n in a[i]) {
+					switch (n) { case 'add': o.p.add = a[i][n]; break;
+					case 'url': o.p.u = a[i][n]; break; } } break;
+			case 'UI': for (n in a[i]) {
+					switch (n) { case 'add': o.u.add = a[i][n]; break;
+					case 'url': o.u.u = a[i][n]; break; } } break; } }
+	} t = null; a = null; INI.fujio = o; o = null;
 }; var f = fujio;
-fujio.is = function () {
-	var a = arguments, i, r = false;
-	if (a.length < 3) {
-		switch (a[1]) {
-		case 'array':
-			if (typeof a[0] === 'object') { if (a[0][0] || /list/i.test(a[0].toString())) { r = true; }
-			else { try { a[0][0] = 0; a[0][0] = null; r = true; } catch (e) {} } }
-		break;
-		case 'bool': if (typeof a[0] === 'boolean') { r = true; } break;
-		case 'method': if (typeof a[0] === 'function') { r = true; } break;
-		case 'number': if (typeof a[0] === 'number') { r = true; } break;
-		case 'object': if (typeof a[0] === 'object') { r = true; } break;
-		case 'text': if (typeof a[0] === 'string') { r = true; } break;
-		case 'var': if (typeof a[0] !== 'object' && typeof a[0] !== 'function') { r = true; } break;
-		default: if (typeof a[0] !== 'unknown') { r = true; } break; }
-	} else if (a.length === 3) {
-		for (i = 0;i < a.length;i++) { if (typeof a[i] !== "number") { a = null; } }
-		if (a && a[2] >= a[0] && a[2] <= a[1]) { r = true; }
-	} return r;
-};
 fujio.uri = function () {
 	var a = arguments[0], r = null, i, t, l, g;
-	if (fujio.is(a, 'text')) {
+	if (isTxt(a)) {
 		r = {
 			uri : a,
 			url : a.split('#')[0].split('?')[0],
-			pcol : a.match(/^[a-z][0-9a-z]*\:/i) + '//',
-			subd : a.match(/\/\/[a-z][0-9a-z]*\../i).slice(2, -2),
-			dmain : a.match(/([a-z][-0-9a-z]*\.[a-z]+(\.[a-z]+)?\/|[a-z]\:\\)/i),
+			pcol : a.match(re('^[a-z][0-9a-z]*\\:', 'i')) + '//',
+			subd : a.match(re('\\/\\/[a-z][0-9a-z]*\\..', 'i')).slice(2, -2),
+			dmain : a.match(re('[a-z][-0-9a-z]*\\.[a-z]+(\\.[a-z]+)?(\\:\\d+)?\\/', 'i')),
 			path : '',
 			file : '',
 			ext : '',
@@ -66,81 +103,87 @@ fujio.uri = function () {
 				s += '\n\tget : \'' + this.get + '\'';
 				s += '}'; }
 		}; if (r.dmain[-1] === '/' || r.dmain[-1] === '\\') { r.dmain = r.dmain.slice(0, -1); }
-		g = new RegExp(r.dmain + '.*(\#|\?)?');
+		g = re(r.dmain + '.*(\\#|\\?)?');
 		r.path = r.uri.match(g).slice(r.dmain.length);
 		if (r.path[-1] === '#' || r.path[-1] === '?') { r.path = r.path.slice(0, -1); }
-		r.file = r.path.match(/[-0-9a-z]*\.[0-9a-z]+$/i);
+		r.file = r.path.match(re('[-0-9a-z]*\\.[0-9a-z]+$', 'i'));
 		r.path = r.path.slice(0, -(r.file.length));
-		r.ext = r.file.match(/\.[0-9a-z]+$/).slice(1);
+		r.ext = r.file.match(re('\\.[0-9a-z]+$')).slice(1);
 		r.file = r.file.slice(0, -(r.ext.length + 1));
-		l = r.get.split('&'); g = {};
+		l = r.get.split('&'); g = obj();
 		if (l.length > 0) {
 			for (i = 0;i < l.length;i++) {
 				t = l[i].split('=');
 				g[t[0]] = t[1];
-				if (/^FALSE$/i.test(t[1])) { g[t[0]] = false; }
-				else if (/^TRUE$/i.test(t[1])) { g[t[0]] = true; }
-				else if (/^[0-9]+$/.test(t[1])) { g[t[0]] = parseInt(t[1], 10); }
-				else if (t[1] === '') { g[t[0]] = null; }
+				if (isBool.test(t[1])) {
+					t[1] = lcase(t[1]);
+					if (t[1] === 'true') { g[t[0]] = true; }
+					else { g[t[0]] = false; }
+				} else if (isNum.test(t[1])) { g[t[0]] = (+t[1]); }
+				else if (t[1] === '') { g[t[0]] = true; }
 			} r.GET = g;
 		}
 	} return r;
 };
-// Get Parent
 fujio.up = function () {
-	var a = arguments, r = null, i, l, t = null; var e = a[0], n, v;
-	for (i = 1;i < 4;i++) { if (!a[i] || !fujio.is(a[i], 'text')) { a[i] = null; } }
-	n = a[1];v = a[3];a = a[2];
-	if (e && e.nodeName) {
+	var a = arguments, r = null, i, t = null, e, n, v; e = a[0];
+	for (i = 1;i < 4;i++) { if (!a[i] || !isTxt(a[i])) { a[i] = null; } }
+	n = a[1];v = a[3];a = a[2]; if (isDom(e)) {
 		if (e.parentNode) { e = e.parentNode; }
 		else if (e.parent) { e = e.parent; }
 		else { e = null; }
 		if (e) {
-			if (n) {
-				n = n.toLowerCase();
-				if (e.nodeName.toLowerCase() !== n) { e = fujio.up(e, n); }
-			} if (a) {
-				t = fujio.attr(e, a);
-				if (v && t !== v) { e = fujio.up(e, n, a, v); }
-			} r = e;
-		}
-	} return r;
-};
-// Get Elements
+			if (n) { n = lcase(n); if (lcase(e.nodeName) !== n) { e = fujio.up(e, n); } }
+			if (a) { t = fujio.attr(e, a); if (v && t !== v) { e = fujio.up(e, n, a, v); } } r = e;
+		} } return r; };
 fujio.tags = function () {
-	var a = arguments; var e = a[0], n = a[1], v = a[3], r = []; a = a[2];
-	if (e && e.nodeName && fujio.is(n, 'text') && n !== '') {
-		r = e.getElementsByTagName(n);
-		if (fujio.(a, 'text') && a !== '') {
-			a = a.toLowerCase();
-			if (fujio.is(v, 'text') && v !== '') {
-				for (i = 0;i < r.length;i++) {
-					if (fujio.attr(r[i], a) !== v)
-						{ r.splice(i, 1); i--; }
-				}
-			} else {
-				for (i = 0;i < r.length;i++) {
-					if (!fujio.attr(r[i], a))
-						{ r.splice(i, 1); i--; }
-				}
-			}
-		}
-	} return r; };
-// Get / Set Inner HTML
-fujio.html = function () { var a = arguments; var e = a[0], c = a[1], r = ""; if (e && e.innerHTML) { if (fujio.def.txt(c)) e.innerHTML = c; r = e.innerHTML; } return r; };
-// Get / Set Attribute
+	var a = arguments, e, n, v, r = list(), l, i; e = a[0];
+	if (!isDom(e)) { e = doc; n = a[0]; v = [2]; a = [1]; }
+	else { n = a[1]; v = a[3]; a = a[2]; }
+	if (!n || !isTxt(n)) { n = '*'; } l = e.getElementsByTagName(n);
+	for (i = 0;i < l.length;i++) { r.push(l[i]); } l = null;
+	if (a && isTxt(a)) {
+		a = a.toLowerCase();
+		if (v && isTxt(v)) {
+			for (i = 0;i < r.length;i++) {
+				if (fujio.attr(r[i], a) !== v)
+					{ r.splice(i, 1); i--; }
+			} } else {
+			for (i = 0;i < r.length;i++) {
+				if (!fujio.attr(r[i], a))
+					{ r.splice(i, 1); i--; }
+			} } } return r; };
+fujio.kids = function () {
+	var a = arguments, e, n, v, r = list(), l, i; e = a[0];
+	if (!isDom(e)) { e = doc; n = a[0]; v = [2]; a = [1]; }
+	else { n = a[1]; v = a[3]; a = a[2]; }
+	if (!n || !isTxt(n)) { n = null; }
+	else { n = lcase(n); } l = e.childNodes;
+	for (i = 0;i < l.length;i++) {
+		if (n && lcase(l[i].nodeName) === n) { r.push(l[i]); }
+		else { r.push(l[i]); }
+	} l = null;
+	if (a && isTxt(a)) { a = lcase(a);
+		if (v && isTxt(v, 'text')) {
+			for (i = 0;i < r.length;i++) {
+				if (fujio.attr(r[i], a) !== v) { r.splice(i, 1); i--; }
+			} } else {
+			for (i = 0;i < r.length;i++) {
+				if (!fujio.attr(r[i], a)) { r.splice(i, 1); i--; }
+			} } } return r; };
+fujio.html = function () { var a = arguments, e, v, r = ''; e = a[0]; v = a[1];
+	if (isHtml(e)) { if (isTxt(v)) { e.innerHTML = v; }
+		r = e.innerHTML; } return r; };
 fujio.attr = function () {
 	var a = arguments, r = null, l, i, s, e, v, t1, t2, t3;
-	e = a[0]; v = a[2]; a = a[1].toLowerCase();
-	if (!a || !fujio.is(a, 'text')) { a = null; }
-	if (!fujio.is(v, 'text')) { v = null; }
-	if (e && e.nodeName && a) {
-		t1 = /^function anonymous\(\) \{\n */, t2 = /\n\}$/, t3 = /^on/;
+	e = a[0]; v = a[2]; a = lcase(a[1]); if (!a || !isTxt(a)) { a = null; }
+	if (!isTxt(v)) { v = null; } if (isDom(e) && a) {
+		t1 = /^function anonymous\(\) \{\n */; t2 = /\n\}$/; t3 = /^on/;
 		if (a === 'style') {
 			s = e.style; if (!v) { v = s.cssText; }
 			l = v.split(';'); v = /\: ?/;
 			for (i = 0;i < l.length;i++) {
-				a = l[i].split(v); a[0] === a[0].toLowerCase();
+				a = l[i].split(v); a[0] = lcase(a[0]);
 				if (a[1]) { fujio.css(e, a[0], a[1]); }
 				l[i] = a.join(':'); a = null;
 			} r = l.join(';'); l = null; if (r.charAt(-1) !== ';') { r += ';'; }
@@ -158,25 +201,18 @@ fujio.attr = function () {
 	} return r;
 };
 fujio.strip = function () {
-	var a = arguments, r = '', i; var o = a[0];
-	if (o && o.toString) {
-		o = o.toString();
+	var a = arguments, r = '', i, o; o = a[0];
+	if (o && o.toString) { o = o.toString();
 		for (i = 1;i < a.length;i++) {
 			try { o = o.replace(a[i], ''); }
 			catch (e) { throw { message : 'fujio.strip(): argument ' + i +
-					' is not usable, consult ' +
-					'"http://www.w3schools.com/jsref/jsref_replace.asp"' +
-					' for reason'
-				};
-			}
-		}
-	} return r;
-};
+				' is not usable, consult "http://www.w3schools.com/jsref/jsref_replace.asp" for reason' }; }
+		} } return r; };
 // Get / Set Styling
 fujio.css = function () {
 	var a = arguments, e, v, s, c = null, w = self, r = null; e = a[0]; v = a[2]; a = a[1];
-	if (e && e.style && fujio.is(a, 'text')) {
-		s = e.style a = a.toLowerCase();
+	if (e && e.style && isTxt(a)) {
+		s = e.style; a = lcase(a);
 		if (e.currentStyle) { c = e.currentStyle; }
 		else if (w.getComputedStyle) { c = w.getComputedStyle(e, null); }
 		if (a === 'float') {
@@ -199,117 +235,46 @@ fujio.css = function () {
 	} return r;
 };
 fujio.ajax = function () {
-	var a = arguments; var o = a[0], f = a[1], d = a[2], x = null;
-	if (fujio.is(o, 'text')) { x = o; o = { u : x }; x = null; }
-	var u = o.u; x = fujio.ajax.xhr(); if (!d) { d = null; }
-	if (!fujio.is(f, 'method')) { f = function () {}; }
-	if (fujio.is(o, 'object') && x && fujio.is(u, 'text') && u !== "") {
-		a = o.a; var m = o.m, s = o.s;
-		if (!fujio.is(a, 'bool')) { a = true; }
-		if (fujio.is(m, 'text')) {
-			m = m.toUpperCase();
+	var a = arguments, o, d, x, u, t, m, s; o = a[0]; d = a[2]; a = a[1];
+	if (isTxt(o)) { t = o; o = obj(); o.u = t; }
+	u = o.u; x = fujio.ajax.xhr(); if (!d) { d = null; }
+	if (!isMethod(a)) { a = function () {}; }
+	if (isObj(o) && x && u && isTxt(u)) {
+		a = o.a; m = o.m; s = o.s;
+		if (!isBool(a)) { a = true; } if (isTxt(m, 'text')) { m = ucase(m);
 			if (!/^(CONNECT|DELETE|GET|H(EAD|TTP)|OPTIONS|P(ATCH|OST|UT)|TRACE)$/.test(m)) { m = "POST"; }
 		} else { m = "POST"; } if (!s) { s = null; }
 		if (x.overrideMimeType) { x.overrideMimeType("text/plain"); }
 		x.open(m, u, a); x.onreadystatechange = function () {
 			if (x.readyState === 4) {
-				if (x.status === 200 || x.status === 0) f(x.responseText, d);
-				else f("", d);
+				if (x.status === 200 || x.status === 0) { a(x.responseText, d); }
+				else { a('', d); }
 			}
 		}; x.send(s);
-	} else { f("", d); }
+	} else { a('', d); }
 }; fujio.ajax.xhr = function () {
-	var x = null, w = window;
+	var x = null, w = self;
 	try { x = new w.XMLHttpRequest(); } catch (e) {
 		try { x = new w.contentRequest(); } catch (e) {
 		    try { x = new w.ActiveXObject("MSXML2.XMLHTTP.3.0"); }
 			catch (e) { x = null; }
 		}
 	} return x;
-};
-fujio.parse = {
-	dom : function () {
-		var a = arguments; var t = a[1], a = a[0], x = null;
-		if (fujio.is(a, 'text') && a !== "") {
-			if (t === "html") {
-				x = document.createElement('iframe').contentDocument;
-				x.write(a);
-			} else {
-				var w = self;
-				var f = w.DOMParser;
-				if (f) {
-					var p = new f();
-					x = p.parseFromString(a, "text/xml");
-				} else {
-					f = w.ActiveXObject;
-					if (f) {
-						x = new f("Microsoft.XMLDOM");
-						x.async = "false";
-						x.loadXML(a);
-					}
+}; fujio.ajax.ini = function () {
+	var a = arguments, d; d = [a[2], a[1]];
+	fujio.ajax(a[0], function () {
+		var a = arguments, x, d, r = null, i, n, t; x = a[0]; d = a[1][0]; a = a[1][1];
+		if (!isMethod(a)) { f = function () {}; }
+		if (x !== '') {
+			r = obj(); x = x.split('\n');
+			for (i = 0;i < x.length;i++) {
+				if (re('^\\[.*\\]$').test(x[i])) {
+					n = x[i].slice(1, -1); r[n] = obj();
+				} else if (n && re('^[a-z]', 'i').test(x[i])) {
+					t = x[i].split('='); if (!t[1]) { t[1] = ''; }
+					r[n][t[0]] = t[1]; t = null;
 				}
 			}
-	} return x; }, num : function () {
-		var n = arguments[0], x = 0;
-		if (fujio.def.txt(n) && /^([0-9]|\,)+(\.([0-9]|\,)+)?$/.test(n))
-			{ x = (+a[0].replace(",", "")); }
-		return x;
-	}, json : function () {
-		var a = arguments, r = null;
-		var s = a[0], f = a[1];
-		if (fujio.def.txt(s)) {
-			var c = Components, t = null;
-			if (!fujio.def.fun) { f = null; }
-			if (JSON) {
-				t = JSON;
-				if (t.parse) { r = t.parse(s, f); }
-				else if (t.fromString) { r = t.fromString(s, f); }
-				else { t = null; }
-			} if (!t && c) {
-				var ci = c.interfaces, cc = c.classes;
-				t = cc["@mozilla.org/dom/json;1"].createInstance(ci.nsIJSON);
-				if (t) { r = t.decode(s); }
-			}
-		} return r;
-	}
-};
-fujio.test = function () {
-  var r = false, e;
-  if (doc.getElementById || doc.all || doc.layers) {
-    e = fujio(arguments[0]); if (e && e.offsetWidth) { r = true; }
-  } return r;
-};
-fujio.ui = function () {
-	if (fujio.is(fujio.ui.tab)) { fujio.ui.tab.init(); }
-	if (fujio.is(fujio.ui.pbar)) { fujio.ui.pbar.init(); }
-	if (fujio.is(fujio.ui.reader)) { fujio.ui.reader.init(); }
-};
-fujio.ui.pbar = function () {
-	var e = arguments[0];
-	if (e && e.id && e.value && /^(\d|\,)+(\.(\d|\,)+)?$/.test(e.value)) {
-		var t = fujio(e.id + 'Txt'), b = fujio(e.id + 'Bar'), v = e.value(/\,/g, '') + '%';
-		if (t) { fujio.html(t, v); }
-		if (b) { fujio.css(b, 'width', v); }
-	}
-};
-fujio.ui.tab = function () {
-	var a = arguments, r = true, e, u, p, i; e = a[0]; a = a[1];
-	if (!fujio.is(a, 'method')) { a = null; }
-	if (e && e.nodeName && e.href) {
-		u = fujio.uri(e.href); p = fujio.up(e, '*', 'class', 'tabs');
-		if (p && u) {
-			fujio.ajax(u.GET[p.id], fujio.ui.tab.ajax, [e, u, a]); a = fujio.tags(p, 'a');
-			for (i = 0;i < a.length;i++) { a[i].className = ''; } e.className = "tab"; r = false;
-		}
-	} return r;
-}; fujio.ui.tab.ajax = function () {
-	var a = arguments, x, e, u, b, i; x = a[0]; a = a[1]; e = a[0]; u = a[1]; a = a[2];
-	if (!x) { loc.href = u.uri; } else {
-		b = fujio(u.id + "Box");
-		if (/^FUNCTION/i.test(x)) {
-			x.replace(/\^FUNCTION.*$/img, '');
-			if (a) { a(b, a[0].slice(8)); }
-		} x.replace(/\<script.*script\>/ig, '<span>SCRIPT</span>');
-		fujio.html(b, x);
-	}
-};
+		} a(r, d);
+	}, d);
+}; fujio.parse = obj(); fujio.ui = obj(); fujio.data = obj();
