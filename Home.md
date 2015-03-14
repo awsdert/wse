@@ -1,0 +1,2 @@
+# Home #
+Hi all, this is a simple engine. It's designed with simplicity and functionality in mind. Version 8 will see a make over from the ground up to reduce mess that the previous versions have become and enable more newbie web developers to use this project in their own sites without having to adapt the script (unless they plan to add more data options which is something we can't do anything about except make the data structures as simple to use as possible).
